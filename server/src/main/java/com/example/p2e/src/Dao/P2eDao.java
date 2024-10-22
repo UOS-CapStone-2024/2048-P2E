@@ -102,9 +102,9 @@ public class P2eDao {
     }
 
     @Transactional
-    public String modifyNickname(PostNickname postNickname) {
-        String modifyNicknameQuery = "insert into User (nickname) VALUES (?)";
-        Object[] modifyNicknameParams = new Object[]{postNickname.getNickname()};
+    public String modifyNickname(PostUser postUser) {
+        String modifyNicknameQuery = "update User set nickname = ? where web3 = ?";
+        Object[] modifyNicknameParams = new Object[]{postUser.getNickname(), postUser.getWeb3()};
         this.jdbcTemplate.update(modifyNicknameQuery, modifyNicknameParams);
 
 

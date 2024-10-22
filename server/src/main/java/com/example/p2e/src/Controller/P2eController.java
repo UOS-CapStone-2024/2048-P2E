@@ -4,6 +4,8 @@ import com.example.p2e.config.BaseException;
 import com.example.p2e.config.BaseResponse;
 import com.example.p2e.src.Dto.*;
 import com.example.p2e.src.Service.P2eService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,7 @@ import static com.example.p2e.config.BaseResponseStatus.*;
 @RestController
 @RequestMapping("/p2e")
 public class P2eController {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private final P2eService p2eService;
 
@@ -103,9 +106,9 @@ public class P2eController {
     //닉네임 변경
     @PostMapping("/modifyNickname")
     @ResponseBody
-    public BaseResponse<String> modifyNickname(@RequestBody PostNickname postNickname) throws Exception {
+    public BaseResponse<String> modifyNickname(@RequestBody PostUser postUser) throws Exception {
         try {
-            String result = p2eService.modifyNickname(postNickname);
+            String result = p2eService.modifyNickname(postUser);
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());

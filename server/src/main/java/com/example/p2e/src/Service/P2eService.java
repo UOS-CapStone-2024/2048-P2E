@@ -86,4 +86,14 @@ public class P2eService {
         PostItemDelete postItemRes = p2eDao.useDelete(postItemDelete);
         return postItemRes;
     }
+
+    @Transactional
+    public String resetPoint() throws BaseException{
+        try {
+            String success = p2eDao.resetPoint();
+            return success;
+        } catch (Exception ignored) {
+            throw new BaseException(REQUEST_ERROR);
+        }
+    }
 }

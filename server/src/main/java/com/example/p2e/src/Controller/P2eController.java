@@ -144,4 +144,15 @@ public class P2eController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    //점수 초기화
+    @PostMapping("/resetPoint")
+    @ResponseBody
+    public BaseResponse<String> resetPoint() throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.resetPoint());
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

@@ -197,4 +197,14 @@ public class P2eDao {
                 getUserParams
         );
     }
+
+    @Transactional
+    public String resetPoint() {
+        String resetPointQuery = "update User set point = 0";
+        this.jdbcTemplate.update(resetPointQuery);
+
+
+        String success = "점수 초기화 완료";
+        return success;
+    }
 }

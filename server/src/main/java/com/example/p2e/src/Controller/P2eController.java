@@ -123,12 +123,23 @@ public class P2eController {
         }
     }
 
-    //아이템 사용
+    //부활 사용
     @PostMapping("/useRevive")
     @ResponseBody
     public BaseResponse<PostItemRevive> useRevive(@RequestBody PostItemRevive postItemRevive) throws BaseException {
         try {
             return new BaseResponse<>(p2eService.useRevive(postItemRevive));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //블록 제거 사용
+    @PostMapping("/useDelete")
+    @ResponseBody
+    public BaseResponse<PostItemDelete> useDelete(@RequestBody PostItemDelete postItemDelete) throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.useDelete(postItemDelete));
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }

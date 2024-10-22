@@ -74,4 +74,16 @@ public class P2eService {
         PostItemRevive postItemRes = p2eDao.useRevive(postItemRevive);
         return postItemRes;
     }
+
+    @Transactional
+    public PostItemDelete useDelete(PostItemDelete postItemDelete) throws BaseException {
+        if (postItemDelete.getDeleteblock() != 1){
+            throw new BaseException(ITEM_ERROR);
+        }
+        if (p2eDao.getDeleteblock(postItemDelete.getWeb3()) < 1){
+            throw new BaseException(ITEM_NUM_ERROR);
+        }
+        PostItemDelete postItemRes = p2eDao.useDelete(postItemDelete);
+        return postItemRes;
+    }
 }

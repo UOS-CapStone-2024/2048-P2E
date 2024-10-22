@@ -167,7 +167,7 @@ public class P2eDao {
     @Transactional
     public PostItemRevive useRevive(PostItemRevive postItemRevive) {
         String useItemQuery = "update Items set revive = ? where web3 = ?";
-        Object[] useItemParams = new Object[]{postItemRevive.getRevive()-1, postItemRevive.getWeb3()};
+        Object[] useItemParams = new Object[]{getRevive(postItemRevive.getWeb3())-1, postItemRevive.getWeb3()};
         this.jdbcTemplate.update(useItemQuery, useItemParams);
 
         String getUserQuery = "select revive from Items where web3 = ?";
@@ -176,6 +176,23 @@ public class P2eDao {
                 (rs, rowNum) -> new PostItemRevive(
                             postItemRevive.getWeb3(),
                             rs.getInt("revive")
+                ),
+                getUserParams
+        );
+    }
+
+    @Transactional
+    public PostItemDelete useDelete(PostItemDelete postItemDelete) {
+        String useItemQuery = "update Items set deleteblock = ? where web3 = ?";
+        Object[] useItemParams = new Object[]{getDeleteblock(postItemDelete.getWeb3())-1, postItemDelete.getWeb3()};
+        this.jdbcTemplate.update(useItemQuery, useItemParams);
+
+        String getUserQuery = "select deleteblock from Items where web3 = ?";
+        String getUserParams = postItemDelete.getWeb3();
+        return this.jdbcTemplate.queryForObject(getUserQuery,
+                (rs, rowNum) -> new PostItemDelete(
+                        postItemDelete.getWeb3(),
+                        rs.getInt("deleteblock")
                 ),
                 getUserParams
         );

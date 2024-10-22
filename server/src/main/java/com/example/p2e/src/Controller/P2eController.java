@@ -7,16 +7,12 @@ import com.example.p2e.src.Service.P2eService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.Sign;
 import org.web3j.crypto.Keys;
 import org.web3j.utils.Numeric;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -127,4 +123,14 @@ public class P2eController {
         }
     }
 
+    //아이템 사용
+    @PostMapping("/useRevive")
+    @ResponseBody
+    public BaseResponse<PostItemRevive> useRevive(@RequestBody PostItemRevive postItemRevive) throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.useRevive(postItemRevive));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

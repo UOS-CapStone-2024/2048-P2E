@@ -19,7 +19,9 @@ public enum BaseResponseStatus {
     // Common
     REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
     VERIFICATION_ERROR(false, 2001, "인증에 실패했습니다."),
-    MESSAGE_ERROR(false, 2001, "메시지와 시그니처가 일치하지 않습니다."),
+    MESSAGE_ERROR(false, 2002, "메시지와 시그니처가 일치하지 않습니다."),
+    ITEM_ERROR(false, 2003, "사용하는 아이템의 수를 맞게 명시해 주세요."),
+    ITEM_NUM_ERROR(false, 2004, "아이템이 부족합니다."),
 
 
 

@@ -1,15 +1,17 @@
 package com.example.p2e.src.Dao;
 
+import com.example.p2e.config.BaseException;
 import com.example.p2e.src.Dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.Map;
+
+import static com.example.p2e.config.BaseResponseStatus.*;
 
 @Repository
 public class P2eDao {
@@ -34,7 +36,7 @@ public class P2eDao {
     @Transactional
     public GetLoginRes logIn(GetLoginReq getLoginReq) {
         String getUserQuery = "select * from User where web3 = ?";
-        String insertUserQuery = "INSERT INTO User (web3, nickname, point, revive, delete) VALUES (?, 'anonymous', 0, 0, 0)";
+        String insertUserQuery = "INSERT INTO User (web3, nickname, point, revive, deleteblock) VALUES (?, 'anonymous', 0, 0, 0)";
         String getUserParams = getLoginReq.getWeb3(); // 클라이언트로부터 받은 id(web3)
 
         try {
@@ -48,7 +50,7 @@ public class P2eDao {
                             ranking,
                             rs.getInt("point"),
                             rs.getInt("revive"),
-                            rs.getInt("delete")
+                            rs.getInt("deleteblock")
                     ),
                     getUserParams
             );
@@ -64,7 +66,7 @@ public class P2eDao {
                             ranking,
                             rs.getInt("point"),
                             rs.getInt("revive"),
-                            rs.getInt("delete")
+                            rs.getInt("deleteblock")
                     ),
                     getUserParams
             );
@@ -138,5 +140,44 @@ public class P2eDao {
             String success = "최고점수 갱신을 축하합니다.";
             return success;
         }
+    }
+
+    @Transactional
+    public int getRevive(String web3ad) {
+        String getRankingQuery = "select revive from Items where web3 = ?";
+        String getUserParams = web3ad;
+
+        return this.jdbcTemplate.queryForObject(getRankingQuery,
+                (rs, rowNum) -> rs.getInt("revive"),
+                getUserParams
+        );
+    }
+
+    @Transactional
+    public int getDeleteblock(String web3ad) {
+        String getRankingQuery = "select deleteblock from Items where web3 = ?";
+        String getUserParams = web3ad;
+
+        return this.jdbcTemplate.queryForObject(getRankingQuery,
+                (rs, rowNum) -> rs.getInt("deleteblock"),
+                getUserParams
+        );
+    }
+
+    @Transactional
+    public PostItemRevive useRevive(PostItemRevive postItemRevive) {
+        String useItemQuery = "update Items set revive = ? where web3 = ?";
+        Object[] useItemParams = new Object[]{postItemRevive.getRevive()-1, postItemRevive.getWeb3()};
+        this.jdbcTemplate.update(useItemQuery, useItemParams);
+
+        String getUserQuery = "select revive from Items where web3 = ?";
+        String getUserParams = postItemRevive.getWeb3();
+        return this.jdbcTemplate.queryForObject(getUserQuery,
+                (rs, rowNum) -> new PostItemRevive(
+                            postItemRevive.getWeb3(),
+                            rs.getInt("revive")
+                ),
+                getUserParams
+        );
     }
 }

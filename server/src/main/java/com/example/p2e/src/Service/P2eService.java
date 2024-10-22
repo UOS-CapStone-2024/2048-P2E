@@ -28,7 +28,6 @@ public class P2eService {
             String success = p2eDao.createUser(postUser);
             return success;
         } catch (Exception e) {
-            // 예외 메시지 로그로 기록
             logger.error("Error while creating user: ", e);
             throw new BaseException(REQUEST_ERROR);
         }
@@ -50,6 +49,17 @@ public class P2eService {
             String success = p2eDao.modifyNickname(postUser);
             return success;
         } catch (Exception ignored) {
+            throw new BaseException(REQUEST_ERROR);
+        }
+    }
+
+    @Transactional
+    public String recordPoint(PostPoint postPoint) throws Exception{
+        try {
+            String success = p2eDao.recordPoint(postPoint);
+            return success;
+        } catch (Exception e) {
+            logger.error("Error while recording point: ", e);
             throw new BaseException(REQUEST_ERROR);
         }
     }

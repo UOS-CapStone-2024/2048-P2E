@@ -115,4 +115,16 @@ public class P2eController {
         }
     }
 
+    //점수 기록
+    @PostMapping("/recordPoint")
+    @ResponseBody
+    public BaseResponse<String> recordPoint(@RequestBody PostPoint postPoint) throws Exception {
+        try {
+            String result = p2eService.recordPoint(postPoint);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 }

@@ -111,4 +111,32 @@ public class P2eDao {
         String success = "닉네임 변경 성공";
         return success;
     }
+
+    @Transactional
+    public int getPoint(String web3ad) {
+        String getRankingQuery = "select point from User where web3 = ?";
+        String getUserParams = web3ad;
+
+        return this.jdbcTemplate.queryForObject(getRankingQuery,
+                (rs, rowNum) -> rs.getInt("point"),
+                getUserParams
+        );
+    }
+
+    @Transactional
+    public String recordPoint(PostPoint postPoint) {
+        if(getPoint(postPoint.getWeb3()) >= postPoint.getPoint()){
+            String fail = "최고점수 갱신에 실패하셨습니다.";
+            return fail;
+        }
+        else{
+            String createUserQuery = "update User set point = ? where web3 = ?";
+            Object[] createUserParams = new Object[]{postPoint.getPoint(), postPoint.getWeb3()};
+            this.jdbcTemplate.update(createUserQuery, createUserParams);
+
+
+            String success = "최고점수 갱신을 축하합니다.";
+            return success;
+        }
+    }
 }

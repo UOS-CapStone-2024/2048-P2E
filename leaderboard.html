@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Leaderboard</title>
+    <style>
+      /* Style for the navigation menu */
+      #menu {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        width: 200px;
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        transform: translateY(-50%);
+        border-radius: 10px 0 0 10px;
+      }
+
+      #menu a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 15px 0;
+        margin: 5px 0;
+        background-color: #444;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #menu a:hover {
+        background-color: #555;
+      }
+
+      #menu a.active {
+        background-color: #007BFF;
+      }
+
+      body {
+        margin-right: 220px;
+      }
+
+      /* Style for Leaderboard title */
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 36px;
+      }
+
+      /* Style for the leaderboard table */
+      table {
+        margin: 50px auto;
+        border-collapse: collapse;
+        width: 50%;
+      }
+
+      table, th, td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-size: 20px;
+      }
+
+      td {
+        font-size: 18px;
+      }
+
+      /* MetaMask warning */
+      #metamask-warning {
+        display: none;
+        background-color: red;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+
+    </style>
+  </head>
+  <body>
+
+    <!-- Navigation Menu -->
+    <div id="menu">
+      <a href="#" id="gamePageLink">Game Page</a>
+      <a href="myPage.html" id="myPageLink">My Page</a>
+      <a href="#" class="active">Leaderboard</a>
+    </div>
+
+    <!-- Leaderboard Title -->
+    <h1>Leaderboard</h1>
+
+    <!-- MetaMask Warning -->
+    <div id="metamask-warning">Please connect to MetaMask to access the Game Page.</div>
+
+    <!-- Leaderboard Table -->
+    <table>
+      <tr>
+        <th>Rank</th>
+        <th>Nickname</th>
+        <th>Highest Score</th>
+        <th>Token Reward</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Player1</td>
+        <td>10000</td>
+        <td>100 Tokens</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Player2</td>
+        <td>9500</td>
+        <td>90 Tokens</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Player3</td>
+        <td>9000</td>
+        <td>80 Tokens</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Player4</td>
+        <td>8500</td>
+        <td>70 Tokens</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Player5</td>
+        <td>8000</td>
+        <td>60 Tokens</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Player6</td>
+        <td>7500</td>
+        <td>50 Tokens</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Player7</td>
+        <td>7000</td>
+        <td>40 Tokens</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Player8</td>
+        <td>6500</td>
+        <td>30 Tokens</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Player9</td>
+        <td>6000</td>
+        <td>20 Tokens</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>Player10</td>
+        <td>5500</td>
+        <td>10 Tokens</td>
+      </tr>
+    </table>
+
+    <script>
+      // MetaMask account check
+      let isMetaMaskConnected = false;
+
+      // Check if MetaMask is installed
+      async function checkMetaMask() {
+        if (typeof window.ethereum !== 'undefined') {
+          console.log('MetaMask is installed!');
+          try {
+            const accounts = await ethereum.request({ method: 'eth_accounts' });
+            if (accounts.length > 0) {
+              console.log('MetaMask is connected');
+              isMetaMaskConnected = true;
+            } else {
+              console.log('MetaMask is not connected');
+            }
+          } catch (error) {
+            console.error('Error fetching MetaMask accounts', error);
+          }
+        } else {
+          console.error('MetaMask is not installed.');
+        }
+      }
+
+      // Function to show MetaMask warning
+      function showWarning(message) {
+        const warningBanner = document.getElementById('metamask-warning');
+        warningBanner.innerHTML = message;
+        warningBanner.style.display = 'block';
+      }
+
+      // Prevent access to Game Page if MetaMask is not connected
+      document.getElementById('gamePageLink').onclick = function (event) {
+        if (!isMetaMaskConnected) {
+          event.preventDefault();
+          showWarning('Please connect MetaMask to access the Game Page.');
+        } else {
+          window.location.href = 'game.html';
+        }
+      };
+
+      // MetaMask auto-connection on page load
+      window.onload = async function () {
+        await checkMetaMask();
+      };
+
+    </script>
+
+  </body>
+</html>

@@ -6,10 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetLoginRes {
-    private String nickname;
-    private int ranking;
-    private int point;
-    private int revive;
+public class PostItemDelete {
+    private String web3;
     private int deleteblock;
 }

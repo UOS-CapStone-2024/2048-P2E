@@ -1,7 +1,6 @@
 package com.example.p2e.src.Service;
 
 import com.example.p2e.config.BaseException;
-import com.example.p2e.config.BaseResponse;
 import com.example.p2e.src.Dao.P2eDao;
 import com.example.p2e.src.Dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ public class P2eService {
             String success = p2eDao.createUser(postUser);
             return success;
         } catch (Exception e) {
-            // 예외 메시지 로그로 기록
             logger.error("Error while creating user: ", e);
             throw new BaseException(REQUEST_ERROR);
         }
@@ -48,6 +46,51 @@ public class P2eService {
     public String modifyNickname(PostUser postUser) throws Exception{
         try {
             String success = p2eDao.modifyNickname(postUser);
+            return success;
+        } catch (Exception ignored) {
+            throw new BaseException(REQUEST_ERROR);
+        }
+    }
+
+    @Transactional
+    public String recordPoint(PostPoint postPoint) throws Exception{
+        try {
+            String success = p2eDao.recordPoint(postPoint);
+            return success;
+        } catch (Exception e) {
+            logger.error("Error while recording point: ", e);
+            throw new BaseException(REQUEST_ERROR);
+        }
+    }
+
+    @Transactional
+    public PostItemRevive useRevive(PostItemRevive postItemRevive) throws BaseException {
+        if (postItemRevive.getRevive() != 1){
+            throw new BaseException(ITEM_ERROR);
+        }
+        if (p2eDao.getRevive(postItemRevive.getWeb3()) < 1){
+            throw new BaseException(ITEM_NUM_ERROR);
+        }
+        PostItemRevive postItemRes = p2eDao.useRevive(postItemRevive);
+        return postItemRes;
+    }
+
+    @Transactional
+    public PostItemDelete useDelete(PostItemDelete postItemDelete) throws BaseException {
+        if (postItemDelete.getDeleteblock() != 1){
+            throw new BaseException(ITEM_ERROR);
+        }
+        if (p2eDao.getDeleteblock(postItemDelete.getWeb3()) < 1){
+            throw new BaseException(ITEM_NUM_ERROR);
+        }
+        PostItemDelete postItemRes = p2eDao.useDelete(postItemDelete);
+        return postItemRes;
+    }
+
+    @Transactional
+    public String resetPoint() throws BaseException{
+        try {
+            String success = p2eDao.resetPoint();
             return success;
         } catch (Exception ignored) {
             throw new BaseException(REQUEST_ERROR);

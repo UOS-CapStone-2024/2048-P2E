@@ -7,16 +7,12 @@ import com.example.p2e.src.Service.P2eService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import org.web3j.crypto.Hash;
 import org.web3j.crypto.Sign;
 import org.web3j.crypto.Keys;
 import org.web3j.utils.Numeric;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigInteger;
 import java.util.Map;
@@ -115,4 +111,48 @@ public class P2eController {
         }
     }
 
+    //점수 기록
+    @PostMapping("/recordPoint")
+    @ResponseBody
+    public BaseResponse<String> recordPoint(@RequestBody PostPoint postPoint) throws Exception {
+        try {
+            String result = p2eService.recordPoint(postPoint);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //부활 사용
+    @PostMapping("/useRevive")
+    @ResponseBody
+    public BaseResponse<PostItemRevive> useRevive(@RequestBody PostItemRevive postItemRevive) throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.useRevive(postItemRevive));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //블록 제거 사용
+    @PostMapping("/useDelete")
+    @ResponseBody
+    public BaseResponse<PostItemDelete> useDelete(@RequestBody PostItemDelete postItemDelete) throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.useDelete(postItemDelete));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    //점수 초기화
+    @PostMapping("/resetPoint")
+    @ResponseBody
+    public BaseResponse<String> resetPoint() throws BaseException {
+        try {
+            return new BaseResponse<>(p2eService.resetPoint());
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }

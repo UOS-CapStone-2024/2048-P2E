@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract TokenDistributor is Ownable {
     IERC20 public token;
 
-    constructor(address _tokenAddress) {
+    constructor(address _tokenAddress) Ownable(msg.sender) {
         token = IERC20(_tokenAddress);
     }
 
